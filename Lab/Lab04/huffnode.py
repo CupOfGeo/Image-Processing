@@ -61,19 +61,3 @@ class huffnode(object):
             print(thisnodestr)
             if self.l is not None:
                 self.l.printTree(level + 1)
-                
-                
-    def treeFreqs(self, level = 0):
-        thisnodestr = '  ' * level + '--'+ str(self)
-        if self.isLeaf():
-            print(self.getFreq())
-        else:
-            #backwards in-order traversal
-            #so left and right is still
-            #left and right when you twist your head.
-            if self.r is not None:
-                self.r.printTree(level + 1)
-            print(thisnodestr)
-            if self.l is not None:
-                self.l.printTree(level + 1)
-        

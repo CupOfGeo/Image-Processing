@@ -36,22 +36,11 @@ def buildHuffTree(I):
     #tree.printTree()
     return tree
 
-
-def get_all_freq(I):
-
-    #Now we know I is uint8, single channel
-    hist, bins = np.histogram(I.ravel(), np.arange(257))
-
-    lystOfNodes = [huffnode(freq, intensity) for freq,intensity in zip(hist, bins[:-1])]
-    return lystOfNode.getFreq()
-
-
-
-
 #A function that recursively constructs the bit sequence leading to
 #each leaf node, building a dictionary that goes from leaf node
 #symbol to that sequence.
-def buildHuffEncoder(tree, seq = '', retDict = {}):
+def buildHuffEncoder(tree, seq = ''):
+    retDict = {}
     if tree.isLeaf():
         retDict[tree.getSymb()] = seq
         return retDict
@@ -90,12 +79,6 @@ def loadHuffableImage(I):
     I = I.copy().astype('uint8')
 
     return I
-
-
-
-
-
-
 
 def testTreeMaking():
     lyst = [huffnode(random.randint(0,100), chr(ord('A') + x)) for x in range(10)]
