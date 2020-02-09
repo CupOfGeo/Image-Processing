@@ -16,6 +16,8 @@ import random
 def buildHuffTree(I):
 
     #Now we know I is uint8, single channel
+    
+    #hist, bins = np.histogram(I.ravel(), np.append(np.unique(I.ravel()),256))
     hist, bins = np.histogram(I.ravel(), np.arange(257))
 
     lystOfNodes = [huffnode(freq, intensity) for freq,intensity in zip(hist, bins[:-1])]
