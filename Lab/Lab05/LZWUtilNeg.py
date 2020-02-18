@@ -11,6 +11,7 @@ http://rosettacode.org/wiki/LZW_compression#Python
 
 import matplotlib.pyplot as plt
 import numpy as np
+from huffTreeUtilities import *
 
 
 """
@@ -19,9 +20,9 @@ generator outstream. parameter bits defines how
 many bits to encode each pattern with, or how 
 big the dictionary gets.
 """
-class LZWCompressNeg(object):
+class LZWCompress(object):
     def __init__(self, instream, bits = 12):
-        self.instream = instream + 255
+        self.instream = instream
         self.bits = bits
         self.table = {}
 
@@ -29,7 +30,7 @@ class LZWCompressNeg(object):
         #myhash = lambda window: ' '.join(str(x) for x in window)
         myhash = lambda window: ''.join(chr(x) for x in window)
 
-        self.table = dict(zip([myhash([x]) for x in range(256+255)], range(256+255)))
+        self.table = dict(zip([myhash([x]) for x in range(256)], range(256)))
 
         #siter = iter(self.instream)
         curwindow = [] #s = empty
@@ -45,8 +46,12 @@ class LZWCompressNeg(object):
                 curwindow = [x]  # set s = ch
 
         yield self.table[myhash(curwindow)]
+        
+        def Huffencoded(self):
+            en, de = buildHuffPair(self.instream)
+            
 
-class LZWDecompressNeg(object):
+class LZWDecompress(object):
     def __init__(self, compressedStream, bits = 12):
         self.compressedStream = compressedStream
         self.bits = bits
@@ -54,7 +59,7 @@ class LZWDecompressNeg(object):
 
     def __iter__(self):
         #table is the other way around now.
-        self.table = dict(zip(range(256+255), [[x] for x in range(256+255)]))
+        self.table = dict(zip(range(256), [[x] for x in range(256)]))
 
         itere = iter(self.compressedStream)
         w = [next(itere)]
@@ -64,7 +69,7 @@ class LZWDecompressNeg(object):
             if x in self.table: #if it's already an entry
                 entry = self.table[x]
             elif x == len(self.table): #x isn't yet in the table.
-                entry = w   [w[0]]
+                entry = w + [w[0]]
             else:
                 raise ValueError('saw compressed index %d, unknown' % x)
 
